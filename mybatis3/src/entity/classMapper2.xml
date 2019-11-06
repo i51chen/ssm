@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="entity.classMapper">
+	<!-- 方式二：嵌套查询：通过执行另外一个SQL映射语句来返回预期的复杂类型 SELECT * FROM class WHERE c_id=1; 
+		SELECT * FROM teacher WHERE t_id=1 //1 是上一个查询得到的teacher_id的值 -->
+	<!-- -->
+	<select id="getClass2" parameterType="int"
+		resultMap="classResultMap2"> select * from class where
+		c_id=#{id}
+	</select>
+	<resultMap type="entity.Classes" id="classResultMap2">
+		<id property="id" column="c_id" />
+		<result property="name" column="c_name" />
+		<association property="teacher" column="teacher_id"
+			select="getTeacher">
+		</association>
+	</resultMap>
+
+	<select id="getTeacher" parameterType="int"
+		resultType="entity.Teacher">
+		SELECT t_id id, t_name name FROM teacher WHERE t_id=#{id}
+	</select>
+</mapper>
