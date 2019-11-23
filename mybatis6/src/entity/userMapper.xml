@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="entity.classMapper">
+	<!-- 查询得到男性或女性的数量, 如果传入的是0就女性否则是男性 CALL mybatis.get_user_count(1, @user_count); -->
+	<select id="getCount" statementType="CALLABLE"
+		parameterMap="getCountMap">
+		call mybatis.get_user_count(?,?)
+	</select>
+	<parameterMap type="java.util.Map" id="getCountMap">
+		<parameter property="sex_id" mode="IN" jdbcType="INTEGER" />
+		<parameter property="user_count" mode="OUT"
+			jdbcType="INTEGER" />
+	</parameterMap>
+</mapper>

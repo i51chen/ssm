@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="entity.classMapper">
+	<!-- 方式一：嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集 封装联表查询的数据(去除重复的数据) select * from class 
+		c, teacher t where c.teacher_id=t.t_id and c.c_id=1 -->
+	<select id="getClass3" parameterType="int"
+		resultMap="ClassResultMap3">
+		select * from class c, teacher t,student s where c.teacher_id=t.t_id and
+		c.C_id=s.class_id and c.c_id=#{id}
+	</select>
+	<resultMap type="_Classes" id="ClassResultMap3">
+		<id property="id" column="c_id" />
+		<result property="name" column="c_name" />
+		<association property="teacher" column="teacher_id"
+			javaType="_Teacher">
+			<id property="id" column="t_id" />
+			<result property="name" column="t_name" />
+		</association>
+		<!-- ofType指定students集合中的对象类型 -->
+		<collection property="students" ofType="_Student">
+			<id property="id" column="s_id" />
+			<result property="name" column="s_name" />
+		</collection>
+	</resultMap>
+
+</mapper>
